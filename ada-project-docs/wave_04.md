@@ -99,10 +99,11 @@ Visit https://api.slack.com/methods/chat.postMessage to read about the Slack API
 
 Answer the following questions. These questions will help you become familiar with the API, and make working with it easier.
 
-- What is the responsibility of this endpoint?
-- What is the URL and HTTP method for this endpoint?
-- What are the _two_ _required_ arguments for this endpoint?
-- How does this endpoint relate to the Slackbot API key (token) we just created?
+- What is the responsibility of this endpoint? This endpoint sends a message to a channel
+- What is the URL and HTTP method for this endpoint? POST
+https://slack.com/api/chat.postMessage
+- What are the _two_ _required_ arguments for this endpoint? token and channel
+- How does this endpoint relate to the Slackbot API key (token) we just created? This is what we will need to pass into the headers of the request so that we can be authenticated and granted access within scope of the token. In this case, to be able to send a message.
 
 Now, visit https://api.slack.com/methods/chat.postMessage/test.
 
@@ -121,9 +122,9 @@ Press the "Test Method" button!
 
 Scroll down to see the HTTP response. Answer the following questions:
 
-- Did we get a success message? If so, did we see the message in our actual Slack workspace?
-- Did we get an error message? If so, why?
-- What is the shape of this JSON? Is it a JSON object or array? What keys and values are there?
+- Did we get a success message? If so, did we see the message in our actual Slack workspace? The value of "ok" is true in the response that I received. I can see the message in #test-slack-api.
+- Did we get an error message? If so, why? No
+- What is the shape of this JSON? Is it a JSON object or array? What keys and values are there? I get a JSON object with four keys: ok, channel, ts, and message. The message and blocks keys have nested JSON objects. 
 
 ### Verify with Postman
 

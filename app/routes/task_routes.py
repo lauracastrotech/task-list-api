@@ -1,5 +1,7 @@
 from flask import Blueprint, request, Response, abort, make_response
-from .route_utilities import validate_model, create_model, get_models_with_filters
+import requests
+import os
+from .route_utilities import validate_model, create_model
 from datetime import datetime
 from ..models.task import Task
 from ..db import db
@@ -14,8 +16,6 @@ def create_task():
 
 @bp.get("")
 def get_tasks():
-    # If you have time, refactor this without utilitiy function
-    # return get_models_with_filters(Task, request.args)
     query = db.select(Task)
 
     sort_param = request.args.get("sort")
@@ -51,6 +51,16 @@ def update_task(id):
 @bp.patch("/<id>/mark_complete")
 def mark_task_complete(id):
     task = validate_model(Task, id)
+
+    data = {
+            "token": f"{os.environ.get('SLACK_API_TOKEN')}",
+            "channel":"test-slack-api",
+            "text":"Someone just completed the task My Beautiful Task"
+            }
+    response = requests.post("https://slack.com/api/chat.postMessage", data=data, 
+                                headers={
+                                    "Authorization": f"Bearer {os.environ.get('SLACK_API_TOKEN')}"
+                                })
 
     if not task.completed_at:
         task.completed_at = datetime.now()
