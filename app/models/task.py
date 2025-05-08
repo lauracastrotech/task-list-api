@@ -9,19 +9,34 @@ class Task(db.Model):
     description: Mapped[str]
     completed_at: Mapped[Optional[bool]] = mapped_column(nullable=True)
     
-# # Helper functions
-#     # to_dict()
     def to_dict(self):
         return {
-            "id":self.id,
-            "title":self.title,
-            "description":self.description,
-            "completed_at": self.completed_at 
-        }
+                "id":self.id,
+                "title":self.title,
+                "description":self.description,
+                "completed_at": self.completed_at 
+            }
+        
+        # task_dict = {
+        #     "id": self.id,
+        #     "title": self.title,
+        #     "description": self.description,
+        #     "is_complete": self.completed_at,
+        # }
+        # return task_dict
+    
+    # def to_dict(self, include_completed_at=False):
+    #     task_dict = {
+    #         "id": self.id,
+    #         "title": self.title,
+    #         "description": self.description,
+    #         "is_complete": bool(self.completed_at),
+    #     }
+    #     if include_completed_at:
+    #         task_dict["completed_at"] = self.completed_at
+    #     return task_dict
 
-#     # @classmethod
-#     # from_dict()
-#     @classmethod
+    @classmethod
     def from_dict(cls, task_data):
         return cls(
             title=task_data["title"],

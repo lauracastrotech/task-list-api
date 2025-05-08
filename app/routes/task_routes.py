@@ -10,15 +10,24 @@ def create_task():
     request_body = request.get_json()
     return create_model(Task, request_body)
 
-# @bp.get("")
-# def get_tasks():
-#     return get_models_with_filters(Task, request.args)
-# # When there are no saved task, this should return []
+@bp.get("")
+def get_tasks():
+    return get_models_with_filters(Task, request.args)
+    '''
+    From the response body, get an array of tasks. If the length of the response it zero, return []
+    Otherwise, convert tasks to dictionary
+    '''
+# When there are no saved task, this should return []
 
-# @bp.get("/<id>")
+@bp.get("/<id>")
+def get_one_task(id):
+    task = validate_model(Task, id)
+    return {"task": task.to_dict()},200 
+
+# @task_bp.get("/<id>")
 # def get_one_task(id):
 #     task = validate_model(Task, id)
-#     return task.to_dict(), 200
+#     return {"task": task.to_dict()}
 
 # @bp.put("/<id>")
 # def update_task(id):

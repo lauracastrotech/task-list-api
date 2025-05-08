@@ -44,10 +44,10 @@ def client(app):
 def one_task(app):
     new_task = Task(title="Go on my daily walk 🏞", 
                     description="Notice something new every day", 
-                    completed_at=None)
+                    completed_at=False)
     db.session.add(new_task)
     db.session.commit()
-
+    return new_task
 
 # This fixture gets called in every test that
 # references "three_tasks"
@@ -67,7 +67,7 @@ def three_tasks(app):
             completed_at=None)
     ])
     db.session.commit()
-
+    # return array of 3 tasks?
 
 # This fixture gets called in every test that
 # references "completed_task"
