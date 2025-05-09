@@ -3,7 +3,7 @@ from app.db import db
 import pytest
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_post_task_ids_to_goal(client, one_goal, three_tasks):
     # Act
     response = client.post("/goals/1/tasks", json={
@@ -20,12 +20,11 @@ def test_post_task_ids_to_goal(client, one_goal, three_tasks):
         "task_ids": [1, 2, 3]
     }
 
-    # Check that Goal was updated in the db
     query = db.select(Goal).where(Goal.id == 1)
     assert len(db.session.scalar(query).tasks) == 3
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_post_task_ids_to_goal_already_with_goals(client, one_task_belongs_to_one_goal, three_tasks):
     # Act
     response = client.post("/goals/1/tasks", json={
@@ -53,11 +52,10 @@ def test_get_tasks_for_specific_goal_no_goal(client):
 
     # Assert
     assert response.status_code == 404
-
-    raise Exception("Complete test with assertion about response body")
-    # *****************************************************************
-    # **Complete test with assertion about response body***************
-    # *****************************************************************
+    assert response_body == {
+        "id": 1,
+        "task_ids": [2, 4]
+    }
 
 
 @pytest.mark.skip(reason="No way to test this feature yet")
