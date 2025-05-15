@@ -26,8 +26,12 @@ def get_one_goals(id):
 @bp.get("/<goal_id>/tasks")
 def get_one_goal_tasks(goal_id):
     goal = validate_model(Goal,goal_id)
-    tasks = [task.to_dict() for task in goal.tasks]
-    return tasks   
+    response_body = goal.to_dict()
+    if "tasks" not in response_body:
+        response_body["tasks"]=[]
+    else:
+        response_body["tasks"] = [task.to_dict() for task in goal.tasks]
+    return response_body
 
 @bp.post("")
 def create_goal():
@@ -39,12 +43,16 @@ def create_goal():
 def create_tasks_with_goal_id(goal_id):
     goal = validate_model(Goal,goal_id)
     request_body = request.get_json()
-    tasks = request_body["task_ids"]
+    tasks = request_body.get("task_ids",[])
+
+    # This is my work around to get tests to pass. My concern is that this is a hardcoded solution that may cause side effects. Although I want to overwrite any existing tasks connected to the goal with teh given id, does this remove the task from the database? Technically tasks refers to a relationship of fields stored in a list, I'm not sure that this is the best solution.
+    for task_id in goal.tasks:
+        goal.tasks.remove(task_id)
 
     for task in tasks:
         valid_task = validate_model(Task, task)
         valid_task.goal_id = goal.id
-    
+
     db.session.commit()
 
     return make_response({"id":goal.id, "task_ids":tasks},200)

@@ -41,3 +41,4 @@ def get_models_with_filters(cls, filters=None):
     models_response = [model.to_dict() for model in models]
 
     return models_response, 200
+
