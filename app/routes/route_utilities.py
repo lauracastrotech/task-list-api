@@ -42,3 +42,9 @@ def get_models_with_filters(cls, filters=None):
 
     return models_response, 200
 
+<<<<<<< HEAD
+=======
+# Abstract slack bot message
+def post_slack_message():
+    pass
+>>>>>>> 2fee59f1182138868b55cc70d124397f1b102bac
