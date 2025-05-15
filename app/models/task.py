@@ -24,6 +24,10 @@ class Task(db.Model):
     
     def is_complete(self):
         return self.completed_at is not None
+    
+    # Create a function that creates nested dictionary {"task":{...}}
+    def nest_dict(self):
+        pass
 
     @classmethod
     def from_dict(cls, task_data):

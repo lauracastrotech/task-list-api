@@ -37,10 +37,12 @@ def create_goal():
 
 @bp.post("/<goal_id>/tasks")
 def create_tasks_with_goal_id(goal_id):
+    # This request should create a new connecting, it updates the list that already exists, getting rid of tasks already associated with the goal, there are two differnt list, this creates a new list
+    # This needs to overwrite the existing tasks list [1] should be replaced with [2,4] 
     goal = validate_model(Goal,goal_id)
     request_body = request.get_json()
     tasks = request_body["task_ids"]
-
+    
     for task in tasks:
         valid_task = validate_model(Task, task)
         valid_task.goal_id = goal.id
