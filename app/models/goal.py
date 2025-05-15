@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 class Goal(db.Model):
 
     # Add table dunder var and set to goal
-    # The difference between having this or not, the table name itself is give the table a name, and hainvg it here gives us more control of the table being called. It allows us to define the name of the db table as opposed to the name to be automatically generated! This happens implicitly because it's a table dunder
+    # The difference between having this or not, the table name itself is give the table a name, and hainvg it here gives us more control of the table being called. It allows us to define the name of the db table as opposed to the name to be automatically generated! This happens implicitly because it's a table dunder, which is a class level attribute
     __tablename__ = "goal"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
