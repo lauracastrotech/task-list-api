@@ -15,20 +15,19 @@ class Task(db.Model):
     goal: Mapped[Optional["Goal"]] = relationship(back_populates="tasks")
     
     def to_dict(self):
-        return {
+        task = {
                 "id":self.id,
                 "title":self.title,
                 "description":self.description,
                 "is_complete": self.is_complete()
             }
+        if self.goal_id:
+            task["goal_id"] =  self.goal_id
+        return task
     
     def is_complete(self):
         return self.completed_at is not None
     
-    # Create a function that creates nested dictionary {"task":{...}}
-    def nest_dict(self):
-        pass
-
     @classmethod
     def from_dict(cls, task_data):
         return cls(

@@ -52,10 +52,14 @@ def test_get_tasks_for_specific_goal_no_goal(client):
 
     # Assert
     assert response.status_code == 404
-    assert response_body == {
+    '''
+    I disagree with this assertion. How can I return a response_body if the goal is not found? I made the assertion that the response body should equal the output message when the model is not found
+        assert response_body == {
         "id": 1,
         "task_ids": [2, 4]
     }
+    '''
+    assert response_body == {'message': 'Goal with id (1) not found.'}
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -75,7 +79,7 @@ def test_get_tasks_for_specific_goal_no_tasks(client, one_goal):
     }
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_tasks_for_specific_goal(client, one_task_belongs_to_one_goal):
     # Act
     response = client.get("/goals/1/tasks")
@@ -94,13 +98,13 @@ def test_get_tasks_for_specific_goal(client, one_task_belongs_to_one_goal):
                 "goal_id": 1,
                 "title": "Go on my daily walk 🏞",
                 "description": "Notice something new every day",
-                "is_complete": False
+                "is_complete": False    
             }
         ]
     }
 
 
-@pytest.mark.skip(reason="No way to test this feature yet")
+# @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_task_includes_goal_id(client, one_task_belongs_to_one_goal):
     response = client.get("/tasks/1")
     response_body = response.get_json()

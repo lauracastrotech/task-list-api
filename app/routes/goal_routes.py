@@ -27,11 +27,14 @@ def get_one_goals(id):
 def get_one_goal_tasks(goal_id):
     goal = validate_model(Goal,goal_id)
     response_body = goal.to_dict()
-    if "tasks" not in response_body:
-        response_body["tasks"]=[]
+
+    if goal.tasks:
+        tasks = [task.to_dict() for task in goal.tasks]
+        response_body["tasks"] = tasks
     else:
-        response_body["tasks"] = [task.to_dict() for task in goal.tasks]
-    return response_body
+        response_body["tasks"] = []
+
+    return response_body 
 
 @bp.post("")
 def create_goal():
@@ -41,24 +44,15 @@ def create_goal():
 
 @bp.post("/<goal_id>/tasks")
 def create_tasks_with_goal_id(goal_id):
-    # This request should create a new connecting, it updates the list that already exists, getting rid of tasks already associated with the goal, there are two differnt list, this creates a new list
-    # This needs to overwrite the existing tasks list [1] should be replaced with [2,4] 
+
     goal = validate_model(Goal,goal_id)
     request_body = request.get_json()
-<<<<<<< HEAD
     tasks = request_body.get("task_ids",[])
 
-    # This is my work around to get tests to pass. My concern is that this is a hardcoded solution that may cause side effects. Although I want to overwrite any existing tasks connected to the goal with teh given id, does this remove the task from the database? Technically tasks refers to a relationship of fields stored in a list, I'm not sure that this is the best solution.
-    for task_id in goal.tasks:
-        goal.tasks.remove(task_id)
+    if goal.tasks:
+        goal.tasks.clear()
 
-=======
-    tasks = request_body["task_ids"]
-    
->>>>>>> 2fee59f1182138868b55cc70d124397f1b102bac
-    for task in tasks:
-        valid_task = validate_model(Task, task)
-        valid_task.goal_id = goal.id
+    goal.tasks = [validate_model(Task, task) for task in tasks]
 
     db.session.commit()
 
