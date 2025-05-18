@@ -55,13 +55,40 @@ def test_get_tasks_sorted_desc(client, three_tasks):
             "title": "Answer forgotten email 📧"},
     ]
 
-# When writing the tests below, ask yourself what you want the response to look like
-@pytest.mark.skip(reason="Need to complete")
+# @pytest.mark.skip(reason="Need to complete")
 # Add a fixture that includes task with empty string, replace three_tasks
-def test_task_no_title_empty_string(client, three_tasks):
-    pass
+def test_task_no_title_empty_string(client, no_title_task):
+    # Act
+    response = client.get("/tasks?sort=desc")
+    response_body = response.get_json()
 
-@pytest.mark.skip(reason="Need to complete")
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 3
+    assert response_body == [
+        {
+            "description": "",
+            "id": 1,
+            "is_complete": False,
+            "title": "Water the garden 🌷"},
+        {
+            "description": "",
+            "id": 3,
+            "is_complete": False,
+            "title": "Pay my outstanding tickets 😭"},
+        {
+            "description": "",
+            "id": 2,
+            "is_complete": False,
+            "title": ""},
+    ]
+
+# @pytest.mark.skip(reason="Need to complete")
 # Add a fixture that includes title with special char, replace three_tasks
-def test_title_beginning_with_special_char(client, three_tasks):
+def test_title_beginning_with_special_char(client, title_starts_special_char):
+    with pytest.raises(ValueError):
+        response = client.get("/tasks")
+        response_body = response.get_json()
+
+def test_title_exceeds_char_limit(client):
     pass

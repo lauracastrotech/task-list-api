@@ -29,8 +29,17 @@ def get_tasks():
 
     tasks_response = []
     for task in tasks:
-        tasks_response.append(task.to_dict())
+        valid_task = task.to_dict()
+        if not has_special_chars(valid_task["title"]):
+            tasks_response.append(valid_task)
     return tasks_response
+
+def has_special_chars(title):
+    special_chars = "#$%()*+,-./:;<=>?@[\]^_`{|}~"
+    for char in title:   
+        if char in special_chars:
+            raise ValueError
+    return False
 
 @bp.get("/<id>")
 def get_one_task(id):

@@ -105,3 +105,34 @@ def one_task_belongs_to_one_goal(app, one_goal, one_task):
     goal = db.session.scalar(goal_query)
     goal.tasks.append(task)
     db.session.commit()
+
+@pytest.fixture
+def no_title_task(app):
+    db.session.add_all([
+        Task(title="Water the garden 🌷", 
+            description="", 
+            completed_at=None),
+        Task(title="", 
+            description="", 
+            completed_at=None),
+        Task(title="Pay my outstanding tickets 😭", 
+            description="", 
+            completed_at=None)
+    ])
+    db.session.commit()
+
+@pytest.fixture
+def title_starts_special_char(app):
+    db.session.add_all([
+        Task(title="$ater the garden 🌷", 
+            description="Plants seeds near companions.", 
+            completed_at=None),
+        Task(title="Walk the dog", 
+            description="Go around the park.", 
+            completed_at=None),
+        Task(title="Pay my outstanding tickets 😭", 
+            description="Make sure that the deadline hasn't passed.", 
+            completed_at=None)
+    ])
+    db.session.commit()
+    
